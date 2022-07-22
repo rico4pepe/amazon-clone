@@ -6,8 +6,9 @@ import productImg1 from '../images/hisense.jpg'
 
 
 function Home() {
+  
   return (
-
+      
     <div className='home'>
     
     <div className='home_container'>
