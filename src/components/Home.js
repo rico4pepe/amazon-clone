@@ -20,7 +20,7 @@ function Home() {
         id = "A15600CF"
         title = "The lean Start" 
         price={50.45}
-        rating = {5}
+        rating = {3}
         image = {productImg1}  />
         <Product />
         <Product />
