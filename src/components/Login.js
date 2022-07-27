@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import './Login.css'
-
+import {auth} from '../firebaseUtility/firebase.js'
+import { createUserWithEmailAndPassword } from "firebase/auth";
+//import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";        
 function Login() {
     //Creating Variables
     const [email, setEmail] =  useState('');
@@ -14,6 +16,20 @@ function Login() {
     const register = e =>{
         e.preventDefault()
         //Firebase Register stuff
+     
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log("User is here ", user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+    alert(errorMessage)
+  });
 
     }
   return (
