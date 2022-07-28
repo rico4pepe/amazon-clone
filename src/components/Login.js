@@ -1,15 +1,35 @@
 import React, {useState} from 'react'
 import './Login.css'
 import {auth} from '../firebaseUtility/firebase.js'
-import { createUserWithEmailAndPassword } from "firebase/auth";
-//import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";        
+import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+      
 function Login() {
     //Creating Variables
+    const navigate = useNavigate();
     const [email, setEmail] =  useState('');
     const [password, setPassword] =  useState('');
     const signIn = e =>{
         e.preventDefault()
         //Firebase login stuff
+
+        signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log("User has signed in ", user)
+    // ...
+
+    if(user){
+      navigate('/')
+    }
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    alert(errorMessage)
+  });
 
     }
 
@@ -22,6 +42,9 @@ createUserWithEmailAndPassword(auth, email, password)
     // Signed in 
     const user = userCredential.user;
     console.log("User is here ", user)
+    if(user){
+      navigate('/')
+    }
     // ...
   })
   .catch((error) => {

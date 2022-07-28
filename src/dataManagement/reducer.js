@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 export const initialState = {
     basket: [],
-
+    user: null,
 };
 
 //How to Create a Selector
@@ -47,6 +47,14 @@ const reducer =(state, action) => {
                     //Get user
                     basket: newBasket ,
                 }; 
+
+                case 'SET_USER':
+                    return{
+                        //retain state 
+                        ...state,
+                        //Get user
+                       user: action.user
+                    }; 
                  
         default:
             return state; 
