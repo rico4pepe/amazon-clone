@@ -2,6 +2,7 @@
 import './App.css';
 import Checkout from './components/Checkout'
 import Payment from './components/Payment'
+import Order from './components/Order'
 import Home from './components/Home'
 import Header from './components/Header'
 import Login from './components/Login'
@@ -54,6 +55,8 @@ onAuthStateChanged(auth, (user) => {
     <Header />
     <Routes>
        <Route path="/" element={<Home />} />
+      
+       <Route path="/Order" element={<Order  />} />
        <Route path="/Login" element={<Login />} />
        <Route path="/Checkout" element={<Checkout />} />
        <Route path="/payment" element={<Elements stripe={promise}><Payment />  </Elements>} />

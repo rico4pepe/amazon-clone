@@ -6,12 +6,14 @@ import CurrencyFormat from 'react-currency-format'
 import { getBasketTotal } from '../dataManagement/reducer'
 import {Link, useNavigate } from  "react-router-dom"
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js'
-import axios from 'axios';
+//import axios from 'axios';
+import axios from '../utils/axios';
+import { db } from '../firebaseUtility/firebase'
 import { async } from '@firebase/util'
 
 function Payment() {
 
-    const baseUrl = 'http://localhost:3000'
+    //const baseUrl = 'http://localhost:5001/clone-5cea2/us-central1/api'
     const navigate = useNavigate();
   
     const [{basket, user}, dispatch] = useStateValue(); 
@@ -31,12 +33,14 @@ function Payment() {
         const getClientSecret = async () =>{
             const response =  await axios({
                 method: 'post',
-                url: `${baseUrl}/payment/create?total=${getBasketTotal(basket) * 100}`
+                url: `/payment/create?total=${getBasketTotal(basket) * 100}`
             }) 
             setClientSecret(response.data.clientSecret) 
         }
         getClientSecret()      
     }, [basket])
+
+    console.log("THE SECRET KEY IS  hellooooooooooooo ", clientSecret)
 
     const handleSubmit =async(e) => {
         //Handle fancy  stripe stuff
@@ -48,13 +52,31 @@ function Payment() {
                 card: elements.getElement(CardElement)
             }
         }).then(({paymentIntent}) =>{
+
+            db
+            .collection('users')
+            .doc(user?.uid)
+            .collection('orders')
+            .doc(paymentIntent.id)
+            .set({
+                basket: basket,
+                amount: paymentIntent.account,
+                created: paymentIntent.created
+
+            })
                 setsucceeded(true)
                 setError(null)
-                setprocessing(false)
+                setprocessing(false)   
+                
+                dispatch({
+                    type: 'EMPTY_BASKET'
+                })
 
                 navigate('/order',  { replace: true }) 
-                
         })
+
+      
+                
     }
 
     const handleCardChange = e =>{
